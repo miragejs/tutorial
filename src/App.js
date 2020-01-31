@@ -4,17 +4,11 @@ export default function App() {
   let [reminders, setReminders] = useState([]);
 
   useEffect(() => {
-    // fetch("/api/reminders")
-    //   .then(res => res.json())
-    //   .then(json => {
-    //     setReminders(json.reminders);
-    //   });
-
-    setReminders([
-      { id: 1, text: "Take out the trash" },
-      { id: 2, text: "Learn Mirage" },
-      { id: 3, text: "Do laundry" }
-    ]);
+    fetch("/api/reminders")
+      .then(res => res.json())
+      .then(json => {
+        setReminders(json.reminders);
+      });
   }, []);
 
   return (
