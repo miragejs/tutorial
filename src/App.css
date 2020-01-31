@@ -3,5 +3,47 @@
 @tailwind utilities;
 
 html {
-  @apply antialiased text-gray-900;
+  @apply antialiased text-gray-900 bg-gray-300;
+}
+
+body {
+  @apply max-w-md mx-auto mt-8 bg-white rounded shadow-lg p-8;
+}
+
+h1 {
+  @apply text-3xl font-bold;
+}
+
+form {
+  @apply mt-6;
+}
+
+input {
+  @apply border rounded px-3 py-2 w-full shadow;
+}
+input:focus {
+  @apply outline-none shadow-outline;
+}
+
+ul {
+  @apply mt-8;
+}
+
+li {
+  @apply py-3 border-b flex justify-between;
+}
+
+li:last-child {
+  @apply border-transparent;
+}
+
+button {
+  @apply hidden opacity-50;
+}
+button:hover {
+  @apply opacity-100;
+}
+
+li:hover button {
+  @apply block;
 }

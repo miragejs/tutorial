@@ -1,26 +1,38 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
 
-function App() {
+export default function App() {
+  let [reminders, setReminders] = useState([]);
+
+  useEffect(() => {
+    // fetch("/api/reminders")
+    //   .then(res => res.json())
+    //   .then(json => {
+    //     setReminders(json.reminders);
+    //   });
+
+    setReminders([
+      { id: 1, text: "Take out the trash" },
+      { id: 2, text: "Learn Mirage" },
+      { id: 3, text: "Do laundry" }
+    ]);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>Reminders</h1>
+
+      <form>
+        <input type="text" placeholder="New reminder" />
+      </form>
+
+      <ul>
+        {reminders.map(reminder => (
+          <li key={reminder.id}>
+            {reminder.text}
+            <button>✖️</button>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
-
-export default App;
