@@ -1,32 +1,51 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  NavLink
+} from "react-router-dom";
+import Reminders from "./Reminders";
 
 export default function App() {
-  let [reminders, setReminders] = useState([]);
+  return (
+    <Router>
+      <header>
+        <nav>
+          <NavLink to="/" exact>
+            Home
+          </NavLink>
+          <NavLink to="/about">About</NavLink>
+        </nav>
+      </header>
 
-  useEffect(() => {
-    fetch("/api/reminders")
-      .then(res => res.json())
-      .then(json => {
-        setReminders(json.reminders);
-      });
-  }, []);
+      <main>
+        <Switch>
+          <Route path="/about">
+            <About />
+          </Route>
+          <Route path="/:listId">
+            <Reminders />
+          </Route>
+          <Route exact path="/">
+            <Reminders />
+          </Route>
+        </Switch>
+      </main>
+    </Router>
+  );
+}
 
+function About() {
   return (
     <div>
-      <h1>Reminders</h1>
-
-      <form>
-        <input type="text" placeholder="New reminder" />
-      </form>
-
-      <ul>
-        {reminders.map(reminder => (
-          <li key={reminder.id}>
-            {reminder.text}
-            <button>✖️</button>
-          </li>
-        ))}
-      </ul>
+      <h1>About</h1>
+      <p className="mt-6">
+        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nam sit
+        aperiam, itaque possimus ut autem similique mollitia architecto
+        quibusdam. Eveniet magni doloribus eligendi facilis ut ducimus error
+        sunt aperiam impedit!
+      </p>
     </div>
   );
 }

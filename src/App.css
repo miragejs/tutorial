@@ -7,15 +7,47 @@ html {
 }
 
 body {
-  @apply max-w-md mx-auto mt-8 bg-white rounded shadow-lg p-8;
+  @apply max-w-md mx-auto mt-6;
+}
+
+header nav a {
+  @apply mr-4 pb-1;
+}
+header nav a.active {
+  @apply border-b border-gray-500;
+}
+
+main {
+  @apply mt-6 bg-white rounded shadow-lg p-8;
+}
+
+main nav {
+  @apply mt-4;
+}
+
+main nav a {
+  @apply inline-block mr-2 text-gray-500 px-4 py-2 rounded text-sm font-semibold;
+}
+main nav a:hover {
+  @apply bg-gray-200;
+}
+main nav a.active {
+  @apply text-white bg-green-500;
 }
 
 h1 {
-  @apply text-3xl font-bold;
+  @apply text-3xl font-bold flex justify-between items-center leading-none;
+}
+
+h1 button {
+  @apply text-xs font-semibold text-gray-500 uppercase;
+}
+h1 button:hover {
+  @apply text-gray-700;
 }
 
 form {
-  @apply mt-6;
+  @apply mt-8 mb-8;
 }
 
 input {
@@ -23,10 +55,6 @@ input {
 }
 input:focus {
   @apply outline-none shadow-outline;
-}
-
-ul {
-  @apply mt-8;
 }
 
 li {
@@ -37,10 +65,10 @@ li:last-child {
   @apply border-transparent;
 }
 
-button {
+ul button {
   @apply hidden opacity-50;
 }
-button:hover {
+ul button:hover {
   @apply opacity-100;
 }
 
