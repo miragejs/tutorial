@@ -1,23 +1,33 @@
 import React, { useEffect, useState } from "react";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
-function Reminders({ listId }) {
+export default function() {
+  return (
+    <div>
+      <h1>Reminders</h1>
+
+      <Reminders />
+    </div>
+  );
+}
+
+function Reminders() {
   let [reminders, setReminders] = useState();
   let [newReminderText, setNewReminderText] = useState("");
 
   useEffect(() => {
-    fetch(`/api/lists/${listId}/reminders`)
+    fetch(`/api/reminders`)
       .then(res => res.json())
       .then(json => {
         setReminders(json.reminders);
       });
-  }, [listId]);
+  }, []);
 
   function handleSubmit(e) {
     e.preventDefault();
     fetch("/api/reminders", {
       method: "POST",
-      body: JSON.stringify({ text: newReminderText, listId })
+      body: JSON.stringify({ text: newReminderText })
     })
       .then(res => res.json())
       .then(json => {
@@ -60,21 +70,11 @@ function Reminders({ listId }) {
   );
 }
 
-// export default Reminders;
-
-export default function Lists() {
-  let { listId } = useParams();
-
-  return (
-    <div>
-      <h1>Reminders</h1>
-
-      <nav>
-        <NavLink to="/1">List 1</NavLink>
-        <NavLink to="/2">List 2</NavLink>
-      </nav>
-
-      <Reminders listId={listId} />
-    </div>
-  );
-}
+// function Lists() {
+//   return (
+//     <nav>
+//       <NavLink to="/1">List 1</NavLink>
+//       <NavLink to="/2">List 2</NavLink>
+//     </nav>
+//   );
+// }

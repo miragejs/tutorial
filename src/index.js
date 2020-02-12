@@ -44,6 +44,10 @@ window.server = new Server({
 
     this.namespace = "api";
 
+    this.get("/reminders", (schema, request) => {
+      return schema.reminders.all();
+    });
+
     this.get("/lists/:id/reminders", (schema, request) => {
       return schema.lists.find(request.params.id).reminders;
     });
