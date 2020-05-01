@@ -9,39 +9,23 @@ window.server = new Server({
     list: Model.extend({
       reminders: hasMany()
     }),
+
     reminder: Model.extend({
-      list: belongsTo(),
-      tags: hasMany()
-    }),
-    tag: Model
+      list: belongsTo()
+    })
   },
 
   seeds(server) {
-    let home = server.create("tag", { name: "Home" });
     let list = server.create("list");
 
-    server.create("reminder", { text: "One", list, tags: [home] });
+    server.create("reminder", { text: "One", list });
     server.create("reminder", { text: "Two", list });
-    server.create("reminder", { text: "Three", list, tags: [home] });
+    server.create("reminder", { text: "Three", list });
 
     server.create("list");
-
-    // server.create("reminder", { text: "One", listId: 1 });
   },
 
   routes() {
-    // this.get("/api/reminders/:id/project", (schema, request) => {
-    //   let reminderId = request.params.id;
-
-    //   return schema.reminders.find(reminderId).project;
-    // });
-
-    // this.get("/api/projects/:id/reminders", (schema, request) => {
-    //   let reminderId = request.params.id;
-
-    //   return schema.reminders.find(reminderId).project;
-    // });
-
     this.namespace = "api";
 
     this.get("/reminders", (schema, request) => {
@@ -49,7 +33,9 @@ window.server = new Server({
     });
 
     this.get("/lists/:id/reminders", (schema, request) => {
-      return schema.lists.find(request.params.id).reminders;
+      let listId = request.params.id;
+
+      return schema.lists.find(listId).reminders;
     });
 
     this.post("/reminders", (schema, request) => {
