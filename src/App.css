@@ -7,7 +7,7 @@ html {
 }
 
 body {
-  @apply max-w-md mx-auto mt-6;
+  @apply max-w-md pt-12 mx-auto;
 }
 
 header nav a {

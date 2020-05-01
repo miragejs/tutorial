@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Server } from "miragejs";
 
-new Server();
+new Server({
+  routes() {
+    this.get("/api/reminders", () => ({
+      reminders: [],
+    }));
+  },
+});
 
 export default function Part1() {
   let [reminders, setReminders] = useState();
@@ -11,8 +17,8 @@ export default function Part1() {
     fetch(`/api/reminders`)
       .then((res) => res.json())
       .then((json) => {
-        setState("success");
         setReminders(json.reminders);
+        setState("success");
       })
       .catch(() => setState("error"));
   }, []);
