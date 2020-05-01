@@ -3,25 +3,44 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  NavLink
+  NavLink,
+  Link,
 } from "react-router-dom";
 import Reminders from "./Reminders";
+import Part1 from "./tutorial/part-1";
 
 export default function App() {
   return (
     <Router>
-      <header>
+      {/* <header>
         <nav>
           <NavLink to="/" exact>
             Home
           </NavLink>
           <NavLink to="/about">About</NavLink>
         </nav>
-      </header>
+      </header> */}
 
       <main>
         <Switch>
-          <Route path="/about">
+          <Route path="/" exact>
+            <p>Welcome to the Mirage JS Tutorial!</p>
+            <ul>
+              <li>
+                <Link className="font-medium text-blue-500" to="/part-1">
+                  Part 1
+                </Link>
+              </li>
+            </ul>
+          </Route>
+          <Route path="/part-1">
+            <Part1 />
+          </Route>
+          <Route path="/final">
+            <Reminders />
+          </Route>
+
+          {/* <Route path="/about">
             <About />
           </Route>
           <Route path="/:listId">
@@ -29,7 +48,7 @@ export default function App() {
           </Route>
           <Route exact path="/">
             <Reminders />
-          </Route>
+          </Route> */}
         </Switch>
       </main>
     </Router>

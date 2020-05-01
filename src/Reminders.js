@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 
-export default function() {
+export default function () {
   let { listId } = useParams();
 
   return (
@@ -15,14 +15,14 @@ export default function() {
   );
 }
 
-function Reminders({ listId }) {
+function Reminders({ listId = 1 }) {
   let [reminders, setReminders] = useState();
   let [newReminderText, setNewReminderText] = useState("");
 
   useEffect(() => {
     fetch(`/api/lists/${listId}/reminders`)
-      .then(res => res.json())
-      .then(json => {
+      .then((res) => res.json())
+      .then((json) => {
         setReminders(json.reminders);
       });
   }, [listId]);
@@ -31,18 +31,20 @@ function Reminders({ listId }) {
     e.preventDefault();
     fetch("/api/reminders", {
       method: "POST",
-      body: JSON.stringify({ text: newReminderText, listId })
+      body: JSON.stringify({ text: newReminderText, listId }),
     })
-      .then(res => res.json())
-      .then(json => {
+      .then((res) => res.json())
+      .then((json) => {
         setNewReminderText("");
-        setReminders(reminders => [...reminders, json.reminder]);
+        setReminders((reminders) => [...reminders, json.reminder]);
       });
   }
 
   function handleDelete(id) {
     fetch(`/api/reminders/${id}`, { method: "DELETE" });
-    setReminders(reminders => reminders.filter(reminder => reminder.id !== id));
+    setReminders((reminders) =>
+      reminders.filter((reminder) => reminder.id !== id)
+    );
   }
 
   return (
@@ -52,13 +54,13 @@ function Reminders({ listId }) {
           type="text"
           placeholder="New reminder"
           value={newReminderText}
-          onChange={e => setNewReminderText(e.target.value)}
+          onChange={(e) => setNewReminderText(e.target.value)}
         />
       </form>
 
       {reminders && reminders.length > 0 ? (
         <ul>
-          {reminders.map(reminder => (
+          {reminders.map((reminder) => (
             <li key={reminder.id}>
               {reminder.text}
               <button onClick={() => handleDelete(reminder.id)}>✖️</button>

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 html {
-  @apply antialiased text-gray-900 bg-gray-300;
+  @apply font-sans antialiased text-gray-900 bg-gray-300;
 }
 
 body {
@@ -11,14 +11,14 @@ body {
 }
 
 header nav a {
-  @apply mr-4 pb-1;
+  @apply pb-1 mr-4;
 }
 header nav a.active {
   @apply border-b border-gray-500;
 }
 
 main {
-  @apply mt-6 bg-white rounded shadow-lg p-8;
+  @apply p-8 mt-6 bg-white rounded shadow-lg;
 }
 
 main nav {
@@ -26,7 +26,7 @@ main nav {
 }
 
 main nav a {
-  @apply inline-block mr-2 text-gray-500 px-4 py-2 rounded text-sm font-semibold;
+  @apply inline-block px-4 py-2 mr-2 text-sm font-semibold text-gray-500 rounded;
 }
 main nav a:hover {
   @apply bg-gray-200;
@@ -36,7 +36,7 @@ main nav a.active {
 }
 
 h1 {
-  @apply text-3xl font-bold flex justify-between items-center leading-none;
+  @apply flex items-center justify-between mb-4 text-3xl font-bold leading-none;
 }
 
 h1 button {
@@ -51,14 +51,14 @@ form {
 }
 
 input {
-  @apply border rounded px-3 py-2 w-full shadow;
+  @apply w-full px-3 py-2 border rounded shadow;
 }
 input:focus {
-  @apply outline-none shadow-outline;
+  @apply shadow-outline outline-none;
 }
 
 li {
-  @apply py-3 border-b flex justify-between;
+  @apply flex justify-between py-3 border-b;
 }
 
 li:last-child {
