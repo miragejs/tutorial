@@ -2,36 +2,34 @@ import React, { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 
 export default function () {
-  let { listId } = useParams();
+  // let { listId } = useParams();
 
   return (
     <div>
       <h1>Reminders</h1>
 
-      <Lists />
-
-      <Reminders listId={listId} />
+      <Reminders />
     </div>
   );
 }
 
-function Reminders({ listId = 1 }) {
+function Reminders() {
   let [reminders, setReminders] = useState();
   let [newReminderText, setNewReminderText] = useState("");
 
   useEffect(() => {
-    fetch(`/api/lists/${listId}/reminders`)
+    fetch(`/api/reminders`)
       .then((res) => res.json())
       .then((json) => {
         setReminders(json.reminders);
       });
-  }, [listId]);
+  }, []);
 
   function handleSubmit(e) {
     e.preventDefault();
     fetch("/api/reminders", {
       method: "POST",
-      body: JSON.stringify({ text: newReminderText, listId }),
+      body: JSON.stringify({ text: newReminderText }),
     })
       .then((res) => res.json())
       .then((json) => {
@@ -68,7 +66,7 @@ function Reminders({ listId = 1 }) {
           ))}
         </ul>
       ) : reminders ? (
-        <p>No reminders</p>
+        <p className="font-medium text-gray-500 text-center">All done!</p>
       ) : (
         <p>Loading...</p>
       )}
