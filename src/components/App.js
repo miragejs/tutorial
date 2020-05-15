@@ -1,34 +1,32 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  NavLink,
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Reminders from "./Reminders";
 import { About } from "./About";
+import { Link } from "./UI";
 
 export default function App() {
   return (
     <Router>
       <div className="pt-12">
         <header className="max-w-md mx-auto">
-          <nav className="mt-4 space-x-4">
-            <NavLink
-              activeClassName="border-b border-cool-gray-600"
-              className="pb-1 text-cool-gray-900"
+          <nav className="mt-4 space-x-5">
+            <Link
+              activeClassName="text-cool-gray-900 border-b-2 border-cool-gray-600"
+              inactiveClassName="text-cool-gray-500 hover:text-cool-gray-900"
+              className="pb-1 font-medium text-sm"
               to="/"
               exact
             >
               Home
-            </NavLink>
-            <NavLink
-              activeClassName="border-b border-cool-gray-600"
-              className="pb-1 text-cool-gray-900"
+            </Link>
+            <Link
+              activeClassName="text-cool-gray-900 border-b-2 border-cool-gray-600"
+              inactiveClassName="text-cool-gray-500 hover:text-cool-gray-900"
+              className="pb-1 font-medium text-sm"
               to="/about"
             >
               About
-            </NavLink>
+            </Link>
           </nav>
         </header>
 

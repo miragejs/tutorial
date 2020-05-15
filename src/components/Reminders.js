@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 export default function () {
   let [reminders, setReminders] = useState();
+  let [lists, setLists] = useState();
   let [newReminderText, setNewReminderText] = useState("");
   let [sidebarIsOpen, setSidebarIsOpen] = useState(true);
 
@@ -14,12 +15,14 @@ export default function () {
   }, []);
 
   useEffect(() => {
-    fetch(`/api/reminders`)
-      .then((res) => res.json())
-      .then((json) => {
-        setReminders(json.reminders);
-      });
-  }, []);
+    if (sidebarIsOpen) {
+      fetch(`/api/lists`)
+        .then((res) => res.json())
+        .then((json) => {
+          setLists(json.lists);
+        });
+    }
+  }, [sidebarIsOpen]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -54,6 +57,16 @@ export default function () {
                 <span>No list</span>
                 <span>{reminders?.length}</span>
               </a>
+              {lists?.map((list) => (
+                <a
+                  key={list.id}
+                  className="block text-sm font-medium flex items-center justify-between py-1 px-6"
+                  href="#"
+                >
+                  <span>{list.name}</span>
+                  <span>{1}</span>
+                </a>
+              ))}
             </div>
             <button className="mx-6 flex items-center text-sm text-cool-gray-300 focus:outline-none hover:text-white">
               <svg
