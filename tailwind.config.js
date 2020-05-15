@@ -8,6 +8,8 @@ module.exports = {
       },
     },
   },
-  variants: {},
-  plugins: [],
+  variants: {
+    display: ["responsive", "group-hover"],
+  },
+  plugins: [require("@tailwindcss/ui")],
 };
