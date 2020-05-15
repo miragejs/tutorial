@@ -6,24 +6,25 @@ import {
   NavLink,
 } from "react-router-dom";
 import Reminders from "./Reminders";
+import { About } from "./About";
 
 export default function App() {
   return (
     <Router>
-      <div className="max-w-md pt-12 mx-auto">
-        <header>
-          <nav className="mt-4">
+      <div className="pt-12">
+        <header className="max-w-md mx-auto">
+          <nav className="mt-4 space-x-4">
             <NavLink
-              activeClassName="border-b border-cool-gray-500"
-              className="pb-1 mr-4"
+              activeClassName="border-b border-cool-gray-600"
+              className="pb-1 text-cool-gray-900"
               to="/"
               exact
             >
               Home
             </NavLink>
             <NavLink
-              activeClassName="border-b border-cool-gray-500"
-              className="pb-1 mr-4"
+              activeClassName="border-b border-cool-gray-600"
+              className="pb-1 text-cool-gray-900"
               to="/about"
             >
               About
@@ -31,7 +32,7 @@ export default function App() {
           </nav>
         </header>
 
-        <main className="p-8 mt-6 bg-white rounded shadow-lg">
+        <main className="mt-6">
           <Switch>
             <Route path="/" exact>
               <Reminders />
@@ -46,19 +47,5 @@ export default function App() {
         </main>
       </div>
     </Router>
-  );
-}
-
-function About() {
-  return (
-    <div>
-      <h1 className="mb-4 text-3xl font-bold leading-none">About</h1>
-      <p className="mt-6">
-        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nam sit
-        aperiam, itaque possimus ut autem similique mollitia architecto
-        quibusdam. Eveniet magni doloribus eligendi facilis ut ducimus error
-        sunt aperiam impedit!
-      </p>
-    </div>
   );
 }
