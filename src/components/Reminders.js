@@ -1,18 +1,35 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "./UI";
+import { useParams, useLocation } from "react-router-dom";
+import { useQueryParam } from "use-query-params";
+import { BooleanParam } from "./utils";
 
 export default function () {
-  let [reminders, setReminders] = useState();
+  let location = useLocation();
+
+  let [reminders, setReminders] = useState(null);
   let [lists, setLists] = useState();
   let [newReminderText, setNewReminderText] = useState("");
-  let [sidebarIsOpen, setSidebarIsOpen] = useState(true);
+  let [sidebarIsOpen, setSidebarIsOpen] = useQueryParam("open", BooleanParam);
+  let { listId } = useParams();
 
   useEffect(() => {
-    fetch(`/api/reminders`)
-      .then((res) => res.json())
-      .then((json) => {
-        setReminders(json.reminders);
-      });
-  }, []);
+    setReminders(null);
+
+    if (listId) {
+      fetch(`/api/lists/${listId}/reminders`)
+        .then((res) => res.json())
+        .then((json) => {
+          setReminders(json.reminders);
+        });
+    } else {
+      fetch(`/api/reminders`)
+        .then((res) => res.json())
+        .then((json) => {
+          setReminders(json.reminders);
+        });
+    }
+  }, [listId]);
 
   useEffect(() => {
     if (sidebarIsOpen) {
@@ -48,27 +65,31 @@ export default function () {
     <div className="flex justify-center">
       <div className="rounded-md shadow-lg overflow-hidden flex mx-auto">
         {sidebarIsOpen && (
-          <div className="bg-cool-gray-800 w-56 pb-4 pt-12 flex flex-col">
-            <div className="flex-1 text-white">
-              <a
-                className="block text-sm bg-cool-gray-700 font-medium flex items-center justify-between py-1 px-6"
-                href="#"
+          <div className="bg-cool-gray-800 w-48 pb-4 pt-12 flex flex-col">
+            <div className="flex-1">
+              <Link
+                className="block text-sm font-medium flex items-center justify-between py-2 px-6"
+                activeClassName="bg-cool-gray-700 text-white"
+                inactiveClassName="text-cool-gray-400 hover:text-white"
+                to={`/${location.search}`}
+                exact
               >
-                <span>No list</span>
-                <span>{reminders?.length}</span>
-              </a>
+                <span>All</span>
+              </Link>
+
               {lists?.map((list) => (
-                <a
+                <Link
                   key={list.id}
-                  className="block text-sm font-medium flex items-center justify-between py-1 px-6"
-                  href="#"
+                  className="block text-sm font-medium flex items-center justify-between py-2 px-6"
+                  activeClassName="bg-cool-gray-700 text-white"
+                  inactiveClassName="text-cool-gray-400 hover:text-white"
+                  to={`/${list.id}${location.search}`}
                 >
                   <span>{list.name}</span>
-                  <span>{1}</span>
-                </a>
+                </Link>
               ))}
             </div>
-            <button className="mx-6 flex items-center text-sm text-cool-gray-300 focus:outline-none hover:text-white">
+            <button className="mx-6 flex items-center text-xs text-cool-gray-400 focus:outline-none hover:text-white">
               <svg
                 className="w-4 h-4 mr-1"
                 fill="currentColor"
@@ -80,7 +101,7 @@ export default function () {
                   fillRule="evenodd"
                 ></path>
               </svg>
-              Add List
+              Add list
             </button>
           </div>
         )}
@@ -99,10 +120,10 @@ export default function () {
 
             <div>
               <form onSubmit={handleSubmit} className="mt-8 mb-8">
-                <div className="mt-1 relative rounded-md shadow-sm">
+                <div className="mt-1 relative rounded-md -ml-3">
                   <input
-                    className="form-input block w-full sm:text-sm sm:leading-5"
-                    placeholder="New reminder"
+                    className="form-input border-transparent placeholder-cool-gray-400 block w-full  sm:leading-5"
+                    placeholder="New reminder..."
                     value={newReminderText}
                     onChange={(e) => setNewReminderText(e.target.value)}
                   />
@@ -113,25 +134,38 @@ export default function () {
                 <ul className="divide-y divide-cool-gray-200">
                   {reminders.map((reminder) => (
                     <li
-                      className="flex justify-between py-3 group"
+                      className="flex items-center justify-between py-3 group"
                       key={reminder.id}
                     >
                       {reminder.text}
                       <button
-                        className="hidden opacity-50 hover:opacity-100 group-hover:block"
+                        className="flex items-center invisible opacity-50 hover:opacity-100 group-hover:visible"
                         onClick={() => handleDelete(reminder.id)}
                       >
-                        ✖️
+                        <svg
+                          className="w-4 h-4"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                            clipRule="evenodd"
+                            fillRule="evenodd"
+                          ></path>
+                        </svg>
+                        ️
                       </button>
                     </li>
                   ))}
                 </ul>
               ) : reminders ? (
-                <p className="font-medium text-cool-gray-500 text-center">
+                <p className="pt-3 font-medium text-cool-gray-400 ">
                   All done!
                 </p>
               ) : (
-                <p>Loading...</p>
+                <p className="pt-3 font-medium text-cool-gray-400 ">
+                  Loading...
+                </p>
               )}
             </div>
           </div>

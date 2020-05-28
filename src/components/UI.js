@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, useRouteMatch } from "react-router-dom";
+import { Link as ReactRouterLink, useRouteMatch } from "react-router-dom";
 
 export function Link({
   className = "",
@@ -8,18 +8,25 @@ export function Link({
   to,
   exact = false,
   children,
+  activeFor,
 }) {
-  let match = useRouteMatch(to);
-  console.log({ match });
+  let isActive;
+  let urlToMatch = activeFor || to.split("?")[0];
+  let match = useRouteMatch(urlToMatch);
 
-  let isActive = match && (exact ? match.isExact : true);
+  if (activeFor) {
+    isActive = match;
+  } else {
+    isActive = match && (exact ? match.isExact : true);
+  }
+
   let classes = `${className} ${
     isActive ? activeClassName : inactiveClassName
   }`;
 
   return (
-    <NavLink className={classes} to={to} exact={exact}>
+    <ReactRouterLink className={classes} to={to} exact={exact ? 1 : 0}>
       {children}
-    </NavLink>
+    </ReactRouterLink>
   );
 }

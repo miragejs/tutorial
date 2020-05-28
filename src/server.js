@@ -1,9 +1,14 @@
-import { Server, Model } from "miragejs";
+import { Server, Model, hasMany, belongsTo } from "miragejs";
 
-new Server({
+window.server = new Server({
   models: {
-    reminder: Model,
-    list: Model,
+    list: Model.extend({
+      reminders: hasMany(),
+    }),
+
+    reminder: Model.extend({
+      list: belongsTo(),
+    }),
   },
 
   seeds(server) {
@@ -11,12 +16,22 @@ new Server({
     server.create("reminder", { text: "Take out the trash" });
     server.create("reminder", { text: "Work out" });
 
-    server.create("list", { name: "Home" });
+    let homeList = server.create("list", { name: "Home" });
+    server.create("reminder", { list: homeList, text: "Do taxes" });
+
     server.create("list", { name: "Work" });
   },
 
   routes() {
-    this.get("/api/lists");
+    this.get("/api/lists", (schema, request) => {
+      return schema.lists.all();
+    });
+
+    this.get("/api/lists/:id/reminders", (schema, request) => {
+      let list = schema.lists.find(request.params.id);
+
+      return list.reminders;
+    });
 
     this.get("/api/reminders", (schema) => {
       return schema.reminders.all();
