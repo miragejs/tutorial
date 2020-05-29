@@ -6,29 +6,22 @@ import { BooleanParam } from "./utils";
 
 export default function () {
   let location = useLocation();
+  let { listId } = useParams();
 
   let [reminders, setReminders] = useState(null);
   let [lists, setLists] = useState();
   let [newReminderText, setNewReminderText] = useState("");
   let [sidebarIsOpen, setSidebarIsOpen] = useQueryParam("open", BooleanParam);
-  let { listId } = useParams();
 
   useEffect(() => {
     setReminders(null);
+    let url = listId ? `/api/lists/${listId}/reminders` : `/api/reminders`;
 
-    if (listId) {
-      fetch(`/api/lists/${listId}/reminders`)
-        .then((res) => res.json())
-        .then((json) => {
-          setReminders(json.reminders);
-        });
-    } else {
-      fetch(`/api/reminders`)
-        .then((res) => res.json())
-        .then((json) => {
-          setReminders(json.reminders);
-        });
-    }
+    fetch(url)
+      .then((res) => res.json())
+      .then((json) => {
+        setReminders(json.reminders);
+      });
   }, [listId]);
 
   useEffect(() => {
@@ -45,12 +38,15 @@ export default function () {
     e.preventDefault();
     fetch("/api/reminders", {
       method: "POST",
-      body: JSON.stringify({ text: newReminderText }),
+      body: JSON.stringify({
+        text: newReminderText,
+        ...(listId && { listId }),
+      }),
     })
       .then((res) => res.json())
       .then((json) => {
         setNewReminderText("");
-        setReminders((reminders) => [...reminders, json.reminder]);
+        setReminders((todos) => [...todos, json.reminder]);
       });
   }
 
@@ -130,7 +126,7 @@ export default function () {
                 </div>
               </form>
 
-              {reminders && reminders.length > 0 ? (
+              {reminders?.length > 0 ? (
                 <ul className="divide-y divide-cool-gray-200">
                   {reminders.map((reminder) => (
                     <li
