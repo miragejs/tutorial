@@ -10,6 +10,8 @@ export default function () {
 
   let [reminders, setReminders] = useState(null);
   let [lists, setLists] = useState();
+  let [error, setError] = useState();
+  let [isAddingTodo, setIsAddingTodo] = useState();
   let [newReminderText, setNewReminderText] = useState("");
   let [sidebarIsOpen, setSidebarIsOpen] = useQueryParam("open", BooleanParam);
 
@@ -21,6 +23,10 @@ export default function () {
       .then((res) => res.json())
       .then((json) => {
         setReminders(json.reminders);
+      })
+      .catch((e) => {
+        setError(true);
+        console.error(e);
       });
   }, [listId]);
 
@@ -47,6 +53,7 @@ export default function () {
       .then((json) => {
         setNewReminderText("");
         setReminders((todos) => [...todos, json.reminder]);
+        setIsAddingTodo(false);
       });
   }
 
@@ -101,7 +108,7 @@ export default function () {
             </button>
           </div>
         )}
-        <div className="flex flex-1 bg-white min-w-md">
+        <div className="flex flex-1 bg-white w-md">
           <div className="bg-white w-12 flex items-center group">
             <button
               onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
@@ -110,30 +117,85 @@ export default function () {
           </div>
 
           <div className="pt-12 pb-12 pr-12 flex-1">
-            <h1 className="flex items-center justify-between mb-4 text-3xl font-bold leading-none">
-              Reminders
-            </h1>
+            <div className="flex justify-between items-center mb-12">
+              <h1 className="flex items-center justify-between text-3xl font-bold leading-none">
+                Reminders
+              </h1>
+
+              <button
+                onClick={() => setIsAddingTodo(true)}
+                className="hover:border-cool-gray-300 border border-transparent rounded p-2 text-cool-gray-600 focus:outline-none"
+              >
+                <svg
+                  className="w-4 h-4"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    fillRule="evenodd"
+                    d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z"
+                    clipRule="evenodd"
+                  ></path>
+                </svg>
+              </button>
+            </div>
 
             <div>
-              <form onSubmit={handleSubmit} className="mt-8 mb-8">
-                <div className="mt-1 relative rounded-md -ml-3">
-                  <input
-                    className="form-input border-transparent placeholder-cool-gray-400 block w-full  sm:leading-5"
-                    placeholder="New reminder..."
-                    value={newReminderText}
-                    onChange={(e) => setNewReminderText(e.target.value)}
-                  />
-                </div>
-              </form>
+              {isAddingTodo && (
+                <form onSubmit={handleSubmit} className="mt-8 mb-8">
+                  <div className="mt-1 relative rounded-md -ml-3">
+                    <input
+                      autoFocus
+                      className="form-input border-transparent placeholder-cool-gray-400 block w-full  sm:leading-5"
+                      placeholder="New reminder..."
+                      value={newReminderText}
+                      onChange={(e) => setNewReminderText(e.target.value)}
+                    />
+                  </div>
+                </form>
+              )}
 
-              {reminders?.length > 0 ? (
+              {error ? (
+                <div className="rounded-md bg-red-50 p-4">
+                  <div className="flex">
+                    <div className="flex-shrink-0">
+                      <svg
+                        className="h-5 w-5 mr-2 text-red-400"
+                        fill="currentColor"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    </div>
+                    <div className="ml-3">
+                      <h3 className="text-sm leading-5 font-medium text-red-800">
+                        Network error
+                      </h3>
+                      <div className="mt-2 text-sm leading-5 text-red-700">
+                        <p>We couldn't load your reminders. Try again soon.</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : reminders?.length > 0 ? (
                 <ul className="divide-y divide-cool-gray-200">
                   {reminders.map((reminder) => (
                     <li
                       className="flex items-center justify-between py-3 group"
                       key={reminder.id}
                     >
-                      {reminder.text}
+                      <div>
+                        {reminder.text}
+                        {!listId && reminder.list && (
+                          <span className="text-xs bg-cool-gray-100 px-2 py-1 font-medium rounded text-cool-gray-600 ml-3">
+                            {reminder.list.name}
+                          </span>
+                        )}
+                      </div>
                       <button
                         className="flex items-center invisible opacity-50 hover:opacity-100 group-hover:visible"
                         onClick={() => handleDelete(reminder.id)}
@@ -155,11 +217,11 @@ export default function () {
                   ))}
                 </ul>
               ) : reminders ? (
-                <p className="pt-3 font-medium text-cool-gray-400 ">
+                <p className="pt-3 font-medium text-cool-gray-400 pb-3">
                   All done!
                 </p>
               ) : (
-                <p className="pt-3 font-medium text-cool-gray-400 ">
+                <p className="pt-3 font-medium text-cool-gray-400 pb-3">
                   Loading...
                 </p>
               )}

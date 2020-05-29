@@ -9,6 +9,9 @@ module.exports = {
       minWidth: {
         md: "28rem",
       },
+      width: {
+        md: "28rem",
+      },
     },
   },
   variants: {

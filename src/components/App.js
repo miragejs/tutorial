@@ -48,7 +48,7 @@ function App() {
         </nav>
       </header>
 
-      <main className="mt-6">
+      <main className="mt-10">
         <Switch>
           <Route path="/about">
             <About />

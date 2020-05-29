@@ -1,6 +1,20 @@
-import { Server, Model, hasMany, belongsTo } from "miragejs";
+import {
+  Model,
+  hasMany,
+  belongsTo,
+  RestSerializer,
+  createServer,
+  Factory,
+} from "miragejs";
 
-window.server = new Server({
+createServer({
+  serializers: {
+    reminder: RestSerializer.extend({
+      include: ["list"],
+      embed: true,
+    }),
+  },
+
   models: {
     list: Model.extend({
       reminders: hasMany(),
@@ -11,14 +25,33 @@ window.server = new Server({
     }),
   },
 
+  // factories: {
+  //   list: Factory.extend({
+  //     name(i) {
+  //       return `List ${i}`;
+  //     },
+
+  //     afterCreate(list, server) {
+  //       server.createList("reminder", 5, { list });
+  //     },
+  //   }),
+
+  //   reminder: Factory.extend({
+  //     text(i) {
+  //       return `Reminder ${i}`;
+  //     },
+  //   }),
+  // },
+
   seeds(server) {
+    // server.create("list", { name: "Home" });
+    // server.create("list", { name: "Office" });
+    // server.create("list", { name: "Gym" });
     server.create("reminder", { text: "Walk the dog" });
     server.create("reminder", { text: "Take out the trash" });
     server.create("reminder", { text: "Work out" });
-
     let homeList = server.create("list", { name: "Home" });
     server.create("reminder", { list: homeList, text: "Do taxes" });
-
     server.create("list", { name: "Work" });
   },
 
