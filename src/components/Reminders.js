@@ -159,11 +159,11 @@ export default function () {
               )}
 
               {error && (
-                <div className="rounded-md bg-red-50 p-4 mb-4">
-                  <div className="flex">
+                <div className="fixed bottom-0 right-0 rounded-md border-b-4 border-red-500 bg-white shadow-xl mr-8 mb-8">
+                  <div className="flex p-4 pr-5 rounded-md">
                     <div className="flex-shrink-0">
                       <svg
-                        className="h-5 w-5 mr-2 text-red-400"
+                        className="h-5 w-5 mr-1 text-red-500"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -175,10 +175,10 @@ export default function () {
                       </svg>
                     </div>
                     <div className="ml-3">
-                      <h3 className="text-sm leading-5 font-medium text-red-800">
+                      <h3 className="text leading-5 font-medium text-red-600">
                         Network error
                       </h3>
-                      <div className="mt-2 text-sm leading-5 text-red-700">
+                      <div className="mt-2 text-sm leading-5">
                         <p>{error}</p>
                       </div>
                     </div>
