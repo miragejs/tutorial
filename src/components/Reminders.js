@@ -25,7 +25,7 @@ export default function () {
         setReminders(json.reminders);
       })
       .catch((e) => {
-        setError(true);
+        setError("We couldn't load your reminders. Try again soon.");
         console.error(e);
       });
   }, [listId]);
@@ -54,6 +54,9 @@ export default function () {
         setNewReminderText("");
         setReminders((todos) => [...todos, json.reminder]);
         setIsAddingTodo(false);
+      })
+      .catch(() => {
+        setError("Your Reminder wasn't saved. Try again.");
       });
   }
 
@@ -155,8 +158,8 @@ export default function () {
                 </form>
               )}
 
-              {error ? (
-                <div className="rounded-md bg-red-50 p-4">
+              {error && (
+                <div className="rounded-md bg-red-50 p-4 mb-4">
                   <div className="flex">
                     <div className="flex-shrink-0">
                       <svg
@@ -176,12 +179,14 @@ export default function () {
                         Network error
                       </h3>
                       <div className="mt-2 text-sm leading-5 text-red-700">
-                        <p>We couldn't load your reminders. Try again soon.</p>
+                        <p>{error}</p>
                       </div>
                     </div>
                   </div>
                 </div>
-              ) : reminders?.length > 0 ? (
+              )}
+
+              {reminders?.length > 0 ? (
                 <ul className="divide-y divide-cool-gray-200">
                   {reminders.map((reminder) => (
                     <li
@@ -220,11 +225,11 @@ export default function () {
                 <p className="pt-3 font-medium text-cool-gray-400 pb-3">
                   All done!
                 </p>
-              ) : (
+              ) : !error ? (
                 <p className="pt-3 font-medium text-cool-gray-400 pb-3">
                   Loading...
                 </p>
-              )}
+              ) : null}
             </div>
           </div>
         </div>
