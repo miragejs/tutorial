@@ -43,16 +43,19 @@ createServer({
   // },
 
   seeds(server) {
-    // server.create("list", { name: "Home" });
-    // server.create("list", { name: "Office" });
-    // server.create("list", { name: "Gym" });
-    // server.create("list", { name: "Gym" });
     server.create("reminder", { text: "Walk the dog" });
     server.create("reminder", { text: "Take out the trash" });
     server.create("reminder", { text: "Work out" });
-    let homeList = server.create("list", { name: "Home" });
-    server.create("reminder", { list: homeList, text: "Do taxes" });
-    server.create("list", { name: "Work" });
+
+    server.create("list", {
+      name: "Home",
+      reminders: [server.create("reminder", { text: "Do taxes" })],
+    });
+
+    server.create("list", {
+      name: "Work",
+      reminders: [server.create("reminder", { text: "Visit bank" })],
+    });
   },
 
   routes() {

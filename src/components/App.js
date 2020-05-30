@@ -30,7 +30,7 @@ function App() {
           <Link
             activeClassName="text-cool-gray-900 border-b-2 border-cool-gray-600"
             inactiveClassName="text-cool-gray-500 hover:text-cool-gray-900"
-            className="pb-1 font-medium text-sm"
+            className="pb-px font-medium text-sm"
             to={`/${location.search}`}
             exact
             activeFor={[{ path: "/", exact: true }, { path: "/:id" }]}
@@ -40,7 +40,7 @@ function App() {
           <Link
             activeClassName="text-cool-gray-900 border-b-2 border-cool-gray-600"
             inactiveClassName="text-cool-gray-500 hover:text-cool-gray-900"
-            className="pb-1 font-medium text-sm"
+            className="pb-px font-medium text-sm"
             to={`/about${location.search}`}
           >
             About

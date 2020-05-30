@@ -187,7 +187,7 @@ export default function () {
               )}
 
               {reminders?.length > 0 ? (
-                <ul className="divide-y divide-cool-gray-200">
+                <ul className="divide-y divide-cool-gray-100">
                   {reminders.map((reminder) => (
                     <li
                       className="flex items-center justify-between py-3 group"
