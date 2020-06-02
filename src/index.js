@@ -8,7 +8,7 @@ import "tailwindcss/tailwind.css";
 const importServer = () =>
   process.env.NODE_ENV === "production"
     ? import("./server-final")
-    : import("./server");
+    : import("./server-final");
 
 importServer().then(() => {
   ReactDOM.render(<App />, document.getElementById("root"));
