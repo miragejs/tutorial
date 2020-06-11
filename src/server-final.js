@@ -87,6 +87,12 @@ export default function ({ environment = "development" } = {}) {
         return schema.reminders.create(attrs);
       });
 
+      this.post("/api/lists", (schema, request) => {
+        let attrs = JSON.parse(request.requestBody);
+
+        return schema.lists.create(attrs);
+      });
+
       this.delete("/api/reminders/:id", (schema, request) => {
         let id = request.params.id;
 
