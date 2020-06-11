@@ -1,26 +1,10 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  useLocation,
-} from "react-router-dom";
+import { Switch, Route, useLocation } from "react-router-dom";
 import Reminders from "./Reminders";
 import { About } from "./About";
 import { Link } from "./UI";
-import { QueryParamProvider } from "use-query-params";
 
-export default function AppWrapper() {
-  return (
-    <Router>
-      <QueryParamProvider ReactRouterRoute={Route}>
-        <App />
-      </QueryParamProvider>
-    </Router>
-  );
-}
-
-function App() {
+export default function App() {
   let location = useLocation();
 
   return (

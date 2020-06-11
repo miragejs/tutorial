@@ -1,15 +1,23 @@
+import "tailwindcss/tailwind.css";
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./components/App";
-import "tailwindcss/tailwind.css";
+import { BrowserRouter, Route } from "react-router-dom";
+import { QueryParamProvider } from "use-query-params";
+import makeServer from "./server";
+import makeFinalServer from "./server-final";
 
-// Import ./server in dev for people following the tutorial
-// Import ./server-final so there's a full live demo when deploying to Vercel
-const importServer = () =>
-  process.env.NODE_ENV === "production"
-    ? import("./server-final")
-    : import("./server-final");
+if (process.env.NODE_ENV === "development") {
+  makeFinalServer(); // For people following the tutorial
+} else if (process.env.NODE_ENV === "production") {
+  makeFinalServer(); // For a live demo when deploying to Vercel
+}
 
-importServer().then(() => {
-  ReactDOM.render(<App />, document.getElementById("root"));
-});
+ReactDOM.render(
+  <BrowserRouter>
+    <QueryParamProvider ReactRouterRoute={Route}>
+      <App />
+    </QueryParamProvider>
+  </BrowserRouter>,
+  document.getElementById("root")
+);

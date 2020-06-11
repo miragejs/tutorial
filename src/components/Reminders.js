@@ -11,37 +11,58 @@ export default function () {
   let [reminders, setReminders] = useState(null);
   let [lists, setLists] = useState();
   let [error, setError] = useState();
-  let [isAddingTodo, setIsAddingTodo] = useState();
+  let [isAddingReminder, setIsAddingReminder] = useState();
   let [newReminderText, setNewReminderText] = useState("");
   let [sidebarIsOpen, setSidebarIsOpen] = useQueryParam("open", BooleanParam);
 
   useEffect(() => {
+    let isCurrent = true;
     setReminders(null);
     let url = listId ? `/api/lists/${listId}/reminders` : `/api/reminders`;
 
     fetch(url)
       .then((res) => res.json())
       .then((json) => {
-        setReminders(json.reminders);
+        if (isCurrent) {
+          setReminders(json.reminders);
+        }
       })
       .catch((e) => {
-        setError("We couldn't load your reminders. Try again soon.");
-        console.error(e);
+        if (isCurrent) {
+          setError("We couldn't load your reminders. Try again soon.");
+          console.error(e);
+        }
       });
+
+    return () => {
+      isCurrent = false;
+    };
   }, [listId]);
 
   useEffect(() => {
+    let isCurrent = true;
+
     if (sidebarIsOpen) {
       fetch(`/api/lists`)
         .then((res) => res.json())
         .then((json) => {
-          setLists(json.lists);
+          if (isCurrent) {
+            setLists(json.lists);
+          }
+        })
+        .catch((e) => {
+          console.error(e);
         });
     }
+
+    return () => {
+      isCurrent = false;
+    };
   }, [sidebarIsOpen]);
 
   function handleSubmit(e) {
     e.preventDefault();
+
     fetch("/api/reminders", {
       method: "POST",
       body: JSON.stringify({
@@ -52,8 +73,8 @@ export default function () {
       .then((res) => res.json())
       .then((json) => {
         setNewReminderText("");
-        setReminders((todos) => [...todos, json.reminder]);
-        setIsAddingTodo(false);
+        setReminders((reminders) => [...reminders, json.reminder]);
+        setIsAddingReminder(false);
       })
       .catch(() => {
         setError("Your Reminder wasn't saved. Try again.");
@@ -126,7 +147,8 @@ export default function () {
               </h1>
 
               <button
-                onClick={() => setIsAddingTodo(true)}
+                data-testid="add-reminder"
+                onClick={() => setIsAddingReminder(true)}
                 className="hover:border-cool-gray-300 border border-transparent rounded p-2 text-cool-gray-600 focus:outline-none"
               >
                 <svg
@@ -144,16 +166,29 @@ export default function () {
             </div>
 
             <div>
-              {isAddingTodo && (
-                <form onSubmit={handleSubmit} className="mt-8 mb-8">
-                  <div className="mt-1 relative rounded-md -ml-3">
-                    <input
-                      autoFocus
-                      className="form-input border-transparent placeholder-cool-gray-400 block w-full  sm:leading-5"
-                      placeholder="New reminder..."
-                      value={newReminderText}
-                      onChange={(e) => setNewReminderText(e.target.value)}
-                    />
+              {isAddingReminder && (
+                <form onSubmit={handleSubmit} className="mt-3 mb-5">
+                  <div>
+                    <div className="flex rounded-md shadow-sm">
+                      <div className="relative flex-grow focus-within:z-10">
+                        <input
+                          id="email"
+                          autoFocus
+                          className="form-input block w-full rounded-none rounded-l-md pl-4 transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                          placeholder="New reminder..."
+                          data-testid="new-reminder-text"
+                          value={newReminderText}
+                          onChange={(e) => setNewReminderText(e.target.value)}
+                        />
+                      </div>
+                      <button
+                        type="submit"
+                        data-testid="save-new-reminder"
+                        className="-ml-px relative inline-flex items-center px-4 py-2 border border-cool-gray-300 text-sm leading-5 font-medium rounded-r-md text-cool-gray-700 bg-cool-gray-50 hover:text-cool-gray-500 hover:bg-white focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:bg-cool-gray-100 active:text-cool-gray-700 transition ease-in-out duration-150"
+                      >
+                        Save
+                      </button>
+                    </div>
                   </div>
                 </form>
               )}
