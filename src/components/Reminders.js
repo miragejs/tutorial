@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "./UI";
 import { useParams, useLocation } from "react-router-dom";
 import { useQueryParam } from "use-query-params";
-import { BooleanParam } from "./utils";
+import { BooleanParam } from "../lib/utils";
 
 export default function () {
   let location = useLocation();

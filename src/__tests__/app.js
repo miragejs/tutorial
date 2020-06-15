@@ -1,23 +1,7 @@
-import React from "react";
-import App from "../components/App";
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-} from "@testing-library/react";
+import { screen, waitForElementToBeRemoved } from "@testing-library/react";
 import makeServer from "../server-final";
-import { MemoryRouter, Route } from "react-router-dom";
-import { QueryParamProvider } from "use-query-params";
 import userEvent from "@testing-library/user-event";
-
-const visit = (url) =>
-  render(
-    <MemoryRouter initialEntries={[url]}>
-      <QueryParamProvider ReactRouterRoute={Route}>
-        <App />
-      </QueryParamProvider>
-    </MemoryRouter>
-  );
+import { visit } from "../lib/test-helpers";
 
 let server;
 
