@@ -1,7 +1,7 @@
+import { visit } from "../lib/test-helpers";
 import { screen, waitForElementToBeRemoved } from "@testing-library/react";
 import makeServer from "../server-final";
 import userEvent from "@testing-library/user-event";
-import { visit } from "../lib/test-helpers";
 
 let server;
 
@@ -11,11 +11,6 @@ beforeEach(() => {
 
 afterEach(() => {
   server.shutdown();
-});
-
-test("it shows a loading spinner", () => {
-  visit("/");
-  expect(screen.getByText("Loading...")).toBeInTheDocument();
 });
 
 test("it shows a message when there are no reminders", async () => {

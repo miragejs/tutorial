@@ -1,6 +1,6 @@
 import { createServer } from "miragejs";
 
-export default function ({ environment = "development" } = {}) {
+export default function (environment = "development") {
   return createServer({
     environment,
     routes() {
