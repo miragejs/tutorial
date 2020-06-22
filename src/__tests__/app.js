@@ -41,7 +41,7 @@ test("it can add a reminder to a list", async () => {
   await waitForElementToBeRemoved(() => screen.getByText("Loading..."));
 
   userEvent.click(screen.getByTestId("add-reminder"));
-  await userEvent.type(screen.getByTestId("new-reminder-text"), "Work out");
+  userEvent.type(screen.getByTestId("new-reminder-text"), "Work out{enter}");
   userEvent.click(screen.getByTestId("save-new-reminder"));
 
   await waitForElementToBeRemoved(() =>
