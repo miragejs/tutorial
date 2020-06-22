@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "./UI";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useHistory } from "react-router-dom";
 import { useQueryParam } from "use-query-params";
 import { BooleanParam } from "../lib/utils";
 
 export default function () {
+  let history = useHistory();
   let location = useLocation();
   let { listId } = useParams();
 
@@ -97,17 +98,24 @@ export default function () {
         setNewListName("");
         setLists((lists) => [...lists, json.list]);
         setIsAddingList(false);
+        history.push(`/${json.list.id}${location.search}`);
       })
       .catch(() => {
         setError("Your List wasn't saved. Try again.");
       });
   }
 
-  function handleDelete(id) {
+  function deleteReminder(id) {
     fetch(`/api/reminders/${id}`, { method: "DELETE" });
     setReminders((reminders) =>
       reminders.filter((reminder) => reminder.id !== id)
     );
+  }
+
+  function deleteList() {
+    fetch(`/api/lists/${listId}`, { method: "DELETE" });
+    setLists((lists) => lists.filter((list) => list.id !== listId));
+    history.push(`/${location.search}`);
   }
 
   return (
@@ -137,27 +145,19 @@ export default function () {
                   <span>{list.name}</span>
                 </Link>
               ))}
-            </div>
-            <div className="mt-10">
-              {isAddingList ? (
+
+              {isAddingList && (
                 <form onSubmit={createList}>
-                  <div className="px-4 text-xs flex rounded-md shadow-sm">
-                    <div className="relative flex-grow focus-within:z-10">
-                      <input
-                        id="email"
-                        autoFocus
-                        className="form-input border-none block w-full rounded-none rounded-l-md pl-2 leading-tight transition ease-in-out duration-150 text-sm"
-                        placeholder="List name..."
-                        data-testid="new-reminder-text"
-                        value={newListName}
-                        onChange={(e) => setNewListName(e.target.value)}
-                      />
-                    </div>
-                    <button
-                      type="submit"
-                      data-testid="save-new-reminder"
-                      className="-ml-px relative inline-flex items-center px-2 py-1 bg-green-500 text-white font-medium rounded-r-md  hover:text-cool-gray-500 hover:bg-white focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:bg-cool-gray-100 active:text-cool-gray-700 transition ease-in-out duration-150"
-                    >
+                  <div className="relative">
+                    <input
+                      autoFocus
+                      value={newListName}
+                      onChange={(e) => setNewListName(e.target.value)}
+                      className="pl-6 pr-9 focus:shadow-none py-2 font-medium form-input rounded-none bg-cool-gray-700 text-sm border-transparent text-white block w-full"
+                      type="text"
+                      placeholder="New list..."
+                    />
+                    <button className="absolute inset-y-0 right-0 px-3 flex items-center text-cool-gray-400 hover:text-cool-gray-200">
                       <svg
                         className="w-4 h-4"
                         fill="currentColor"
@@ -172,25 +172,26 @@ export default function () {
                     </button>
                   </div>
                 </form>
-              ) : (
-                <button
-                  onClick={() => setIsAddingList(true)}
-                  className="mx-6 flex items-center text-xs text-cool-gray-400 focus:outline-none hover:text-white"
-                >
-                  <svg
-                    className="w-4 h-4 mr-1"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
-                      clipRule="evenodd"
-                      fillRule="evenodd"
-                    ></path>
-                  </svg>
-                  Add list
-                </button>
               )}
+            </div>
+            <div className="mt-10">
+              <button
+                onClick={() => setIsAddingList(!isAddingList)}
+                className="mx-6 flex items-center text-xs text-cool-gray-400  hover:text-white"
+              >
+                <svg
+                  className="w-4 h-4 mr-1"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+                    clipRule="evenodd"
+                    fillRule="evenodd"
+                  ></path>
+                </svg>
+                Add list
+              </button>
             </div>
           </div>
         )}
@@ -198,7 +199,7 @@ export default function () {
           <div className="w-12 flex items-center group">
             <button
               onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
-              className="bg-cool-gray-200 hover:bg-cool-gray-300 group-hover:block hidden ml-2 w-2 h-10 rounded-full focus:outline-none"
+              className="bg-cool-gray-200 hover:bg-cool-gray-300 group-hover:block hidden ml-2 w-2 h-10 rounded-full"
             ></button>
           </div>
 
@@ -211,7 +212,7 @@ export default function () {
               <button
                 data-testid="add-reminder"
                 onClick={() => setIsAddingReminder(!isAddingReminder)}
-                className="hover:border-cool-gray-300 border border-transparent rounded p-2 text-cool-gray-600 focus:outline-none"
+                className="hover:border-cool-gray-300 border border-transparent rounded p-2 text-cool-gray-600"
               >
                 <svg
                   className="w-4 h-4"
@@ -246,7 +247,7 @@ export default function () {
                       <button
                         type="submit"
                         data-testid="save-new-reminder"
-                        className="-ml-px relative inline-flex items-center px-4 py-2 border border-cool-gray-300 text-sm leading-5 font-medium rounded-r-md text-cool-gray-700 bg-cool-gray-50 hover:text-cool-gray-500 hover:bg-white focus:outline-none focus:shadow-outline-blue focus:border-blue-300 active:bg-cool-gray-100 active:text-cool-gray-700 transition ease-in-out duration-150"
+                        className="-ml-px relative inline-flex items-center px-4 py-2 border border-cool-gray-300 text-sm leading-5 font-medium rounded-r-md text-cool-gray-700 bg-cool-gray-50 hover:text-cool-gray-500 hover:bg-white    active:bg-cool-gray-100 active:text-cool-gray-700 transition ease-in-out duration-150"
                       >
                         Save
                       </button>
@@ -300,7 +301,7 @@ export default function () {
                       </div>
                       <button
                         className="flex items-center invisible opacity-50 hover:opacity-100 group-hover:visible"
-                        onClick={() => handleDelete(reminder.id)}
+                        onClick={() => deleteReminder(reminder.id)}
                       >
                         <svg
                           className="w-4 h-4"
@@ -328,6 +329,17 @@ export default function () {
                 </p>
               ) : null}
             </div>
+
+            {listId && (
+              <div className="text-right mt-20">
+                <button
+                  onClick={deleteList}
+                  className="font-medium text-sm text-cool-gray-400 hover:text-cool-gray-600 px-2"
+                >
+                  Delete list
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>

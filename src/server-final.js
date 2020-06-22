@@ -98,6 +98,15 @@ export default function ({ environment = "development" } = {}) {
 
         return schema.reminders.find(id).destroy();
       });
+
+      this.delete("/api/lists/:id", (schema, request) => {
+        let id = request.params.id;
+        let list = schema.lists.find(id);
+
+        list.reminders.destroy();
+
+        return list.destroy();
+      });
     },
   });
 }
