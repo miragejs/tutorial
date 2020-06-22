@@ -10,7 +10,7 @@ export function About() {
           className="underline"
           href="https://miragejs.com/tutorial"
           style={{
-            textDecorationColor: "#97a6ba",
+            textDecorationColor: "#64748b",
           }}
         >
           Mirage JS Tutorial

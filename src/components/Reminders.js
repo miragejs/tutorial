@@ -13,7 +13,9 @@ export default function () {
   let [lists, setLists] = useState();
   let [error, setError] = useState();
   let [isAddingReminder, setIsAddingReminder] = useState();
+  let [isSavingReminder, setIsSavingReminder] = useState();
   let [isAddingList, setIsAddingList] = useState();
+  let [isSavingList, setIsSavingList] = useState();
   let [newReminderText, setNewReminderText] = useState("");
   let [newListName, setNewListName] = useState("");
   let [sidebarIsOpen, setSidebarIsOpen] = useQueryParam("open", BooleanParam);
@@ -66,6 +68,12 @@ export default function () {
   function createReminder(e) {
     e.preventDefault();
 
+    if (!newReminderText) {
+      return;
+    }
+
+    setIsSavingReminder(true);
+
     fetch("/api/reminders", {
       method: "POST",
       body: JSON.stringify({
@@ -81,11 +89,20 @@ export default function () {
       })
       .catch(() => {
         setError("Your Reminder wasn't saved. Try again.");
+      })
+      .finally(() => {
+        setIsSavingReminder(false);
       });
   }
 
   function createList(e) {
     e.preventDefault();
+
+    if (!newListName) {
+      return;
+    }
+
+    setIsSavingList(true);
 
     fetch("/api/lists", {
       method: "POST",
@@ -102,6 +119,9 @@ export default function () {
       })
       .catch(() => {
         setError("Your List wasn't saved. Try again.");
+      })
+      .finally(() => {
+        setIsSavingList(false);
       });
   }
 
@@ -147,7 +167,7 @@ export default function () {
               ))}
 
               {isAddingList && (
-                <form onSubmit={createList}>
+                <form onSubmit={createList} className={`${isSavingList ? 'opacity-50 pointer-events-none' : ''}`}>
                   <div className="relative">
                     <input
                       autoFocus
@@ -157,7 +177,10 @@ export default function () {
                       type="text"
                       placeholder="New list..."
                     />
-                    <button className="absolute inset-y-0 right-0 px-3 flex items-center text-cool-gray-400 hover:text-cool-gray-200">
+                    <button
+                      data-testid="add-list"
+                      className="absolute inset-y-0 right-0 px-3 flex items-center text-cool-gray-400 hover:text-cool-gray-200"
+                    >
                       <svg
                         className="w-4 h-4"
                         fill="currentColor"
@@ -230,7 +253,12 @@ export default function () {
 
             <div>
               {isAddingReminder && (
-                <form onSubmit={createReminder} className="mb-5">
+                <form
+                  onSubmit={createReminder}
+                  className={`mb-5 ${
+                    isSavingReminder ? "opacity-50 pointer-events-none" : ""
+                  }`}
+                >
                   <div>
                     <div className="flex rounded-md shadow-sm">
                       <div className="relative flex-grow focus-within:z-10">
