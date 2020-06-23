@@ -20,6 +20,8 @@ export default function () {
   let [newListName, setNewListName] = useState("");
   let [sidebarIsOpen, setSidebarIsOpen] = useQueryParam("open", BooleanParam);
 
+  let activeList = listId && lists?.find((list) => list.id === listId);
+
   useEffect(() => {
     let isCurrent = true;
     setReminders(null);
@@ -167,7 +169,12 @@ export default function () {
               ))}
 
               {isAddingList && (
-                <form onSubmit={createList} className={`${isSavingList ? 'opacity-50 pointer-events-none' : ''}`}>
+                <form
+                  onSubmit={createList}
+                  className={`${
+                    isSavingList ? "opacity-50 pointer-events-none" : ""
+                  }`}
+                >
                   <div className="relative">
                     <input
                       autoFocus
@@ -229,7 +236,7 @@ export default function () {
           <div className="pt-12 pb-12 pr-12 flex-1">
             <div className="flex justify-between items-center mb-10">
               <h1 className="flex items-center justify-between text-3xl font-bold leading-none">
-                Reminders
+                {activeList?.name || "Reminders"}
               </h1>
 
               <button

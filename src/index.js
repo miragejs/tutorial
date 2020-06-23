@@ -8,7 +8,8 @@ import makeServer from "./server";
 import makeFinalServer from "./server-final";
 
 if (process.env.NODE_ENV === "development") {
-  makeServer(); // For people following the tutorial
+  // makeServer && makeServer(); // For people following the tutorial
+  makeFinalServer();
 } else if (process.env.NODE_ENV === "production") {
   makeFinalServer(); // For a live demo when deploying to Vercel
 }
