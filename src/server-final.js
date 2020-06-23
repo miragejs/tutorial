@@ -1,5 +1,5 @@
 /*
-  One solution for the final Server that fully implements the API for the Reminders app.
+  This is the final solution for the tutorial that fully implements the API for the Reminders app.
 */
 import {
   Model,
