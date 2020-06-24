@@ -1,5 +1,5 @@
 /*
-  This is the final solution for the tutorial that fully implements the API for the Reminders app.
+  This is the final solution for the Tutorial that fully implements the API for the Reminders app.
 */
 import {
   Model,
@@ -70,9 +70,9 @@ export default function ({ environment = "development" } = {}) {
     },
 
     routes() {
-      this.get("/api/lists", (schema, request) => {
-        return schema.lists.all();
-      });
+      // this.get("/api/lists", (schema, request) => {
+      //   return schema.lists.all();
+      // });
 
       this.get("/api/lists/:id/reminders", (schema, request) => {
         let list = schema.lists.find(request.params.id);

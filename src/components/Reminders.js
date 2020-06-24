@@ -89,8 +89,9 @@ export default function () {
         setReminders((reminders) => [...reminders, json.reminder]);
         setIsAddingReminder(false);
       })
-      .catch(() => {
+      .catch((e) => {
         setError("Your Reminder wasn't saved. Try again.");
+        console.error(e);
       })
       .finally(() => {
         setIsSavingReminder(false);
@@ -259,38 +260,6 @@ export default function () {
             </div>
 
             <div>
-              {isAddingReminder && (
-                <form
-                  onSubmit={createReminder}
-                  className={`mb-5 ${
-                    isSavingReminder ? "opacity-50 pointer-events-none" : ""
-                  }`}
-                >
-                  <div>
-                    <div className="flex rounded-md shadow-sm">
-                      <div className="relative flex-grow focus-within:z-10">
-                        <input
-                          id="email"
-                          autoFocus
-                          className="form-input block w-full rounded-none rounded-l-md pl-4 transition ease-in-out duration-150 sm:text-sm sm:leading-5"
-                          placeholder="New reminder..."
-                          data-testid="new-reminder-text"
-                          value={newReminderText}
-                          onChange={(e) => setNewReminderText(e.target.value)}
-                        />
-                      </div>
-                      <button
-                        type="submit"
-                        data-testid="save-new-reminder"
-                        className="-ml-px relative inline-flex items-center px-4 py-2 border border-cool-gray-300 text-sm leading-5 font-medium rounded-r-md text-cool-gray-700 bg-cool-gray-50 hover:text-cool-gray-500 hover:bg-white    active:bg-cool-gray-100 active:text-cool-gray-700 transition ease-in-out duration-150"
-                      >
-                        Save
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              )}
-
               {error && (
                 <div className="fixed bottom-0 right-0 rounded-md border-b-4 border-red-500 bg-white shadow-xl mr-8 mb-8">
                   <div className="flex p-4 pr-5 rounded-md">
@@ -323,7 +292,7 @@ export default function () {
                 <ul className="divide-y divide-cool-gray-100">
                   {reminders.map((reminder) => (
                     <li
-                      className="flex items-center justify-between py-3 group"
+                      className="flex items-center justify-between py-2 group"
                       key={reminder.id}
                     >
                       <div>
@@ -335,7 +304,7 @@ export default function () {
                         )}
                       </div>
                       <button
-                        className="flex items-center invisible opacity-50 hover:opacity-100 group-hover:visible"
+                        className="flex px-2 py-1 items-center invisible opacity-50 hover:opacity-100 group-hover:visible"
                         onClick={() => deleteReminder(reminder.id)}
                       >
                         <svg
@@ -363,6 +332,48 @@ export default function () {
                   Loading...
                 </p>
               ) : null}
+
+              {isAddingReminder && (
+                <form
+                  onSubmit={createReminder}
+                  className={`-mx-3 ${
+                    isSavingReminder ? "opacity-50 pointer-events-none" : ""
+                  }`}
+                >
+                  <div>
+                    <div className="py-1 relative">
+                      <input
+                        id="email"
+                        autoFocus
+                        className="py-2 rounded-none focus form-input border-transparent block w-full transition ease-in-out duration-150 border-2 focus:shadow-none focus:border-blue-300 sm:leading-5"
+                        placeholder="New reminder..."
+                        data-testid="new-reminder-text"
+                        value={newReminderText}
+                        onChange={(e) => setNewReminderText(e.target.value)}
+                      />
+                      <div className="absolute right-0 inset-y-0 flex py-1">
+                        <button
+                          type="submit"
+                          data-testid="save-new-reminder"
+                          className="text-cool-gray-700 hover:text-cool-gray-400 items-center px-4 text-sm"
+                        >
+                          <svg
+                            className="w-4 h-4"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            ></path>
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              )}
             </div>
 
             {listId && (
