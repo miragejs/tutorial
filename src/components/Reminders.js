@@ -148,7 +148,7 @@ export default function () {
           <div className="bg-cool-gray-800 w-48 pb-4 pt-12 flex flex-col">
             <div className="flex-1">
               <Link
-                className="block text-sm font-medium flex items-center justify-between py-2 px-6"
+                className="text-sm font-medium flex items-center justify-between py-2 px-6"
                 activeClassName="bg-cool-gray-700 text-white"
                 inactiveClassName="text-cool-gray-400 hover:text-white"
                 to={`/${location.search}`}
@@ -160,7 +160,7 @@ export default function () {
               {lists?.map((list) => (
                 <Link
                   key={list.id}
-                  className="block text-sm font-medium flex items-center justify-between py-2 px-6"
+                  className="text-sm font-medium flex items-center justify-between py-2 px-6"
                   activeClassName="bg-cool-gray-700 text-white"
                   inactiveClassName="text-cool-gray-400 hover:text-white"
                   to={`/${list.id}${location.search}`}
