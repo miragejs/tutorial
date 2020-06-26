@@ -137,7 +137,7 @@ export default function () {
 
   function deleteList() {
     fetch(`/api/lists/${listId}`, { method: "DELETE" });
-    setLists((lists) => lists.filter((list) => list.id !== listId));
+    setLists((lists) => lists?.filter((list) => list.id !== listId));
     history.push(`/${location.search}`);
   }
 
@@ -184,10 +184,11 @@ export default function () {
                       className="pl-6 pr-9 focus:shadow-none py-2 font-medium form-input rounded-none bg-cool-gray-700 text-sm border-transparent text-white block w-full"
                       type="text"
                       placeholder="New list..."
+                      data-testid="new-list-text"
                     />
                     <button
-                      data-testid="add-list"
                       className="absolute inset-y-0 right-0 px-3 flex items-center text-cool-gray-400 hover:text-cool-gray-200"
+                      data-testid="save-new-list"
                     >
                       <svg
                         className="w-4 h-4"
@@ -208,7 +209,8 @@ export default function () {
             <div className="mt-10">
               <button
                 onClick={() => setIsAddingList(!isAddingList)}
-                className="mx-6 flex items-center text-xs text-cool-gray-400  hover:text-white"
+                className="mx-6 flex items-center text-xs text-cool-gray-400 hover:text-white"
+                data-testid="add-list"
               >
                 <svg
                   className="w-4 h-4 mr-1"
@@ -231,12 +233,16 @@ export default function () {
             <button
               onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
               className="bg-cool-gray-200 hover:bg-cool-gray-300 group-hover:block hidden ml-2 w-2 h-10 rounded-full"
+              data-testid="toggle-sidebar"
             ></button>
           </div>
 
           <div className="pt-12 pb-12 pr-12 flex-1">
             <div className="flex justify-between items-center mb-10">
-              <h1 className="flex items-center justify-between text-3xl font-bold leading-none">
+              <h1
+                className="flex items-center justify-between text-3xl font-bold leading-none"
+                data-testid="active-list-title"
+              >
                 {activeList?.name || "Reminders"}
               </h1>
 
@@ -294,11 +300,15 @@ export default function () {
                     <li
                       className="flex items-center justify-between py-2 group"
                       key={reminder.id}
+                      data-testid="reminder"
                     >
                       <div>
                         {reminder.text}
                         {!listId && reminder.list && (
-                          <span className="text-xs bg-cool-gray-100 px-2 py-1 font-medium rounded text-cool-gray-600 ml-3">
+                          <span
+                            className="text-xs bg-cool-gray-100 px-2 py-1 font-medium rounded text-cool-gray-600 ml-3"
+                            data-testid="list-tag"
+                          >
                             {reminder.list.name}
                           </span>
                         )}
@@ -306,6 +316,7 @@ export default function () {
                       <button
                         className="flex px-2 py-1 items-center invisible opacity-50 hover:opacity-100 group-hover:visible"
                         onClick={() => deleteReminder(reminder.id)}
+                        data-testid="delete-reminder"
                       >
                         <svg
                           className="w-4 h-4"
@@ -381,6 +392,7 @@ export default function () {
                 <button
                   onClick={deleteList}
                   className="font-medium text-sm text-cool-gray-400 hover:text-cool-gray-600 px-2"
+                  data-testid="delete-list"
                 >
                   Delete list
                 </button>
