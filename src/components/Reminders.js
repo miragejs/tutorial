@@ -345,7 +345,7 @@ export default function () {
                       <input
                         id="email"
                         autoFocus
-                        className="py-2 rounded-none focus form-input border-transparent block w-full transition ease-in-out duration-150 border-2 focus:shadow-none focus:border-blue-300 sm:leading-5"
+                        className="py-2 focus form-input border-transparent block w-full transition ease-in-out duration-150 border-2 focus:shadow-none focus:border-blue-300 sm:leading-5"
                         placeholder="New reminder..."
                         data-testid="new-reminder-text"
                         value={newReminderText}
