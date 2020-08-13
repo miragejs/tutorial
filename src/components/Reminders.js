@@ -143,102 +143,107 @@ export default function () {
 
   return (
     <div className="flex justify-center">
-      <div className="rounded-md shadow-lg overflow-hidden flex mx-auto">
+      <div className="flex mx-auto overflow-hidden rounded-md shadow-lg">
         {sidebarIsOpen && (
-          <div className="bg-cool-gray-800 w-48 pb-4 pt-12 flex flex-col">
-            <div className="flex-1">
-              <Link
-                className="text-sm font-medium flex items-center justify-between py-2 px-6"
-                activeClassName="bg-cool-gray-700 text-white"
-                inactiveClassName="text-cool-gray-400 hover:text-white"
-                to={`/${location.search}`}
-                exact
-              >
-                <span>All</span>
-              </Link>
+          <div className="flex flex-col bg-cool-gray-800">
+            <div className="flex flex-col flex-1 w-48 pt-12 pb-4 bg-cool-gray-800">
+              <div className="flex-1">
+                <div>
+                  <Link
+                    className="flex items-center justify-between px-6 py-2 text-sm font-medium"
+                    activeClassName="bg-cool-gray-700 text-white"
+                    inactiveClassName="text-cool-gray-400 hover:text-white"
+                    to={`/${location.search}`}
+                    exact
+                  >
+                    <span>All</span>
+                  </Link>
 
-              {lists?.map((list) => (
-                <Link
-                  key={list.id}
-                  className="text-sm font-medium flex items-center justify-between py-2 px-6"
-                  activeClassName="bg-cool-gray-700 text-white"
-                  inactiveClassName="text-cool-gray-400 hover:text-white"
-                  to={`/${list.id}${location.search}`}
-                >
-                  <span>{list.name}</span>
-                </Link>
-              ))}
-
-              {isAddingList && (
-                <form
-                  onSubmit={createList}
-                  className={`${
-                    isSavingList ? "opacity-50 pointer-events-none" : ""
-                  }`}
-                >
-                  <div className="relative">
-                    <input
-                      autoFocus
-                      value={newListName}
-                      onChange={(e) => setNewListName(e.target.value)}
-                      className="pl-6 pr-9 focus:shadow-none py-2 font-medium form-input rounded-none bg-cool-gray-700 text-sm border-transparent text-white block w-full"
-                      type="text"
-                      placeholder="New list..."
-                      data-testid="new-list-text"
-                    />
-                    <button
-                      className="absolute inset-y-0 right-0 px-3 flex items-center text-cool-gray-400 hover:text-cool-gray-200"
-                      data-testid="save-new-list"
+                  {lists?.map((list) => (
+                    <Link
+                      key={list.id}
+                      className="flex items-center justify-between px-6 py-2 text-sm font-medium"
+                      activeClassName="bg-cool-gray-700 text-white"
+                      inactiveClassName="text-cool-gray-400 hover:text-white"
+                      to={`/${list.id}${location.search}`}
                     >
-                      <svg
-                        className="w-4 h-4"
-                        fill="currentColor"
-                        viewBox="0 0 20 20"
+                      <span>{list.name}</span>
+                    </Link>
+                  ))}
+                </div>
+
+                {isAddingList && (
+                  <form
+                    onSubmit={createList}
+                    className={`${
+                      isSavingList ? "opacity-50 pointer-events-none" : ""
+                    }`}
+                  >
+                    <div className="relative">
+                      <input
+                        autoFocus
+                        value={newListName}
+                        onChange={(e) => setNewListName(e.target.value)}
+                        className="block w-full py-2 pl-6 text-sm font-medium text-white border-transparent rounded-none pr-9 focus:shadow-none form-input bg-cool-gray-700"
+                        type="text"
+                        placeholder="New list..."
+                        data-testid="new-list-text"
+                      />
+                      <button
+                        className="absolute inset-y-0 right-0 flex items-center px-3 text-cool-gray-400 hover:text-cool-gray-200"
+                        data-testid="save-new-list"
                       >
-                        <path
-                          fillRule="evenodd"
-                          d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        ></path>
-                      </svg>
-                    </button>
-                  </div>
-                </form>
-              )}
-            </div>
-            <div className="mt-10">
-              <button
-                onClick={() => setIsAddingList(!isAddingList)}
-                className="mx-6 flex items-center text-xs text-cool-gray-400 hover:text-white"
-                data-testid="add-list"
-              >
-                <svg
-                  className="w-4 h-4 mr-1"
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
+                        <svg
+                          className="w-4 h-4"
+                          fill="currentColor"
+                          viewBox="0 0 20 20"
+                        >
+                          <path
+                            fillRule="evenodd"
+                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+                            clipRule="evenodd"
+                          ></path>
+                        </svg>
+                      </button>
+                    </div>
+                  </form>
+                )}
+              </div>
+              <div className="mt-10">
+                <button
+                  onClick={() => setIsAddingList(!isAddingList)}
+                  className="flex items-center mx-6 text-xs text-cool-gray-400 hover:text-white"
+                  data-testid="add-list"
                 >
-                  <path
-                    d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
-                    clipRule="evenodd"
-                    fillRule="evenodd"
-                  ></path>
-                </svg>
-                Add list
-              </button>
+                  <svg
+                    className="w-4 h-4 mr-1"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z"
+                      clipRule="evenodd"
+                      fillRule="evenodd"
+                    ></path>
+                  </svg>
+                  Add list
+                </button>
+              </div>
             </div>
           </div>
         )}
+
         <div className="flex flex-1 bg-white w-md">
-          <div className="w-12 flex items-center group">
+          <div className="flex items-center w-12 group">
             <button
               onClick={() => setSidebarIsOpen(!sidebarIsOpen)}
-              className="bg-cool-gray-200 hover:bg-cool-gray-300 group-hover:block hidden ml-2 w-2 h-10 rounded-full"
+              className="hidden w-2 h-10 ml-2 rounded-full bg-cool-gray-200 hover:bg-cool-gray-300 group-hover:block"
               data-testid="toggle-sidebar"
             ></button>
           </div>
 
-          <div className="pt-12 pb-12 pr-12 flex-1">
-            <div className="flex justify-between items-center mb-10">
+          <div className="flex-1 pt-12 pb-12 pr-12">
+            <div className="flex items-center justify-between mb-10">
               <h1
                 className="flex items-center justify-between text-3xl font-bold leading-none"
                 data-testid="active-list-title"
@@ -249,7 +254,7 @@ export default function () {
               <button
                 data-testid="add-reminder"
                 onClick={() => setIsAddingReminder(!isAddingReminder)}
-                className="hover:border-cool-gray-300 border border-transparent rounded p-2 text-cool-gray-600"
+                className="p-2 border border-transparent rounded hover:border-cool-gray-300 text-cool-gray-600"
               >
                 <svg
                   className="w-4 h-4"
@@ -267,11 +272,11 @@ export default function () {
 
             <div>
               {error && (
-                <div className="fixed bottom-0 right-0 rounded-md border-b-4 border-red-500 bg-white shadow-xl mr-8 mb-8">
+                <div className="fixed bottom-0 right-0 mb-8 mr-8 bg-white border-b-4 border-red-500 rounded-md shadow-xl">
                   <div className="flex p-4 pr-5 rounded-md">
                     <div className="flex-shrink-0">
                       <svg
-                        className="h-5 w-5 mr-1 text-red-500"
+                        className="w-5 h-5 mr-1 text-red-500"
                         fill="currentColor"
                         viewBox="0 0 20 20"
                       >
@@ -283,7 +288,7 @@ export default function () {
                       </svg>
                     </div>
                     <div className="ml-3">
-                      <h3 className="text leading-5 font-medium text-red-600">
+                      <h3 className="font-medium leading-5 text-red-600 text">
                         Network error
                       </h3>
                       <div className="mt-2 text-sm leading-5">
@@ -295,51 +300,53 @@ export default function () {
               )}
 
               {reminders?.length > 0 ? (
-                <ul className="divide-y divide-cool-gray-100">
-                  {reminders.map((reminder) => (
-                    <li
-                      className="flex items-center justify-between py-2 group"
-                      key={reminder.id}
-                      data-testid="reminder"
-                    >
-                      <div>
-                        {reminder.text}
-                        {!listId && reminder.list && (
-                          <span
-                            className="text-xs bg-cool-gray-100 px-2 py-1 font-medium rounded text-cool-gray-600 ml-3"
-                            data-testid="list-tag"
-                          >
-                            {reminder.list.name}
-                          </span>
-                        )}
-                      </div>
-                      <button
-                        className="flex px-2 py-1 items-center invisible opacity-50 hover:opacity-100 group-hover:visible"
-                        onClick={() => deleteReminder(reminder.id)}
-                        data-testid="delete-reminder"
+                <div>
+                  <ul className="divide-y divide-cool-gray-100">
+                    {reminders.map((reminder, i) => (
+                      <li
+                        className="flex items-center justify-between py-2 group"
+                        key={reminder.id}
+                        data-testid="reminder"
                       >
-                        <svg
-                          className="w-4 h-4"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
+                        <div>
+                          {reminder.text}
+                          {!listId && reminder.list && (
+                            <span
+                              className="px-2 py-1 ml-3 text-xs font-medium rounded bg-cool-gray-100 text-cool-gray-600"
+                              data-testid="list-tag"
+                            >
+                              {reminder.list.name}
+                            </span>
+                          )}
+                        </div>
+                        <button
+                          className="flex items-center invisible px-2 py-1 opacity-50 hover:opacity-100 group-hover:visible"
+                          onClick={() => deleteReminder(reminder.id)}
+                          data-testid="delete-reminder"
                         >
-                          <path
-                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                            clipRule="evenodd"
-                            fillRule="evenodd"
-                          ></path>
-                        </svg>
-                        ️
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+                          <svg
+                            className="w-4 h-4"
+                            fill="currentColor"
+                            viewBox="0 0 20 20"
+                          >
+                            <path
+                              d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                              clipRule="evenodd"
+                              fillRule="evenodd"
+                            ></path>
+                          </svg>
+                          ️
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
               ) : reminders ? (
-                <p className="pt-3 font-medium text-cool-gray-400 pb-3">
+                <p className="pt-3 pb-3 font-medium text-cool-gray-400">
                   All done!
                 </p>
               ) : !error ? (
-                <p className="pt-3 font-medium text-cool-gray-400 pb-3">
+                <p className="pt-3 pb-3 font-medium text-cool-gray-400">
                   Loading...
                 </p>
               ) : null}
@@ -352,21 +359,21 @@ export default function () {
                   }`}
                 >
                   <div>
-                    <div className="py-1 relative">
+                    <div className="relative py-1">
                       <input
                         id="email"
                         autoFocus
-                        className="py-2 focus form-input border-transparent block w-full transition ease-in-out duration-150 border-2 focus:shadow-none focus:border-blue-300 sm:leading-5"
+                        className="block w-full py-2 transition duration-150 ease-in-out border-2 border-transparent focus form-input focus:shadow-none focus:border-blue-300 sm:leading-5"
                         placeholder="New reminder..."
                         data-testid="new-reminder-text"
                         value={newReminderText}
                         onChange={(e) => setNewReminderText(e.target.value)}
                       />
-                      <div className="absolute right-0 inset-y-0 flex py-1">
+                      <div className="absolute inset-y-0 right-0 flex py-1">
                         <button
                           type="submit"
                           data-testid="save-new-reminder"
-                          className="text-cool-gray-700 hover:text-cool-gray-400 items-center px-4 text-sm"
+                          className="items-center px-4 text-sm text-cool-gray-700 hover:text-cool-gray-400"
                         >
                           <svg
                             className="w-4 h-4"
@@ -388,10 +395,10 @@ export default function () {
             </div>
 
             {listId && (
-              <div className="text-right mt-20">
+              <div className="mt-20 text-right">
                 <button
                   onClick={deleteList}
-                  className="font-medium text-sm text-cool-gray-400 hover:text-cool-gray-600 px-2"
+                  className="px-2 text-sm font-medium text-cool-gray-400 hover:text-cool-gray-600"
                   data-testid="delete-list"
                 >
                   Delete list
