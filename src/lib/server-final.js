@@ -57,6 +57,8 @@ export default function ({ environment = "development" } = {}) {
       server.create("reminder", { text: "Walk the dog" });
       server.create("reminder", { text: "Take out the trash" });
       server.create("reminder", { text: "Work out" });
+      // server.createList("reminder", 5);
+      // server.createList("reminder", 30);
 
       server.create("list", {
         name: "Home",
