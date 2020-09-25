@@ -12,7 +12,10 @@ if (
   typeof makeServer === "function"
 ) {
   makeServer(); // For people following the tutorial
-} else if (process.env.NODE_ENV === "production") {
+} else if (
+  process.env.NODE_ENV === "production" ||
+  process.env.REACT_APP_DEMO
+) {
   makeFinalServer(); // For a live demo when deploying to Vercel
 }
 
